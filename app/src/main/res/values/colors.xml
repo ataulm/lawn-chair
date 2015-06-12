@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="transparent">#00000000</color>
+
+  <color name="item_apps_app_background_pressed">#80ffffff</color>
+  <color name="item_apps_app_background_focused">#40ffffff</color>
+  <color name="item_apps_app_background_normal">@color/transparent</color>
+</resources>
