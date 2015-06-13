@@ -15,7 +15,8 @@ import java.util.Set;
 final class AppUsageDataRepository {
 
     private static final String PREFERENCE_NAME = BuildConfig.APPLICATION_ID + ".MostUsedApps";
-    private static final String PACKAGE_NAMES = BuildConfig.APPLICATION_ID + "PACKAGE_NAMES";
+    private static final String KEY_PACKAGE_NAMES = BuildConfig.APPLICATION_ID + "PACKAGE_NAMES";
+    private static final String KEY_OPEN_COUNT_PREFIX = BuildConfig.APPLICATION_ID + ".OpenCount.";
 
     private final SharedPreferences preferences;
 
@@ -42,7 +43,7 @@ final class AppUsageDataRepository {
     }
 
     private static List<String> getListOfAppsFrom(SharedPreferences preferences) {
-        Set<String> apps = preferences.getStringSet(PACKAGE_NAMES, Collections.<String>emptySet());
+        Set<String> apps = preferences.getStringSet(KEY_PACKAGE_NAMES, Collections.<String>emptySet());
         List<String> appsList = new ArrayList<>(apps.size());
         appsList.addAll(apps);
         return appsList;
@@ -76,7 +77,7 @@ final class AppUsageDataRepository {
     }
 
     private static String keyOpenCountFor(String packageName) {
-        return BuildConfig.APPLICATION_ID + ".OpenCount." + packageName;
+        return KEY_OPEN_COUNT_PREFIX + packageName;
     }
 
 }
