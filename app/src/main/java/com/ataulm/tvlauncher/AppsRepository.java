@@ -36,18 +36,19 @@ class AppsRepository {
     }
 
     private static App obtainAppFrom(PackageManager packageManager, ApplicationInfo applicationInfo) {
-        Intent launchIntent = packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
+        App.PackageName packageName = new App.PackageName(applicationInfo.packageName);
         String name = String.valueOf(packageManager.getApplicationLabel(applicationInfo));
         Drawable icon = packageManager.getApplicationIcon(applicationInfo);
+        Intent launchIntent = packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
 
-        return createApp(name, icon, launchIntent);
+        return createApp(packageName, name, icon, launchIntent);
     }
 
-    private static App createApp(String appName, Drawable icon, Intent intent) {
+    private static App createApp(App.PackageName packageName, String appName, Drawable icon, Intent intent) {
         if (intent == null) {
             return App.NULL_SAFE;
         }
-        return new App(appName, icon, intent);
+        return new App(packageName, appName, icon, intent);
     }
 
 }

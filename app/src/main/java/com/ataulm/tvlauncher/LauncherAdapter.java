@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-final class AppsAdapter extends RecyclerView.Adapter<AppViewHolder> {
+final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
     private final List<App> apps;
     private final AppViewHolder.ClickListener clickListener;
     private final LayoutInflater layoutInflater;
 
-    AppsAdapter(List<App> apps, AppViewHolder.ClickListener clickListener, LayoutInflater layoutInflater) {
+    LauncherAdapter(List<App> apps, AppViewHolder.ClickListener clickListener, LayoutInflater layoutInflater) {
         this.apps = apps;
         this.clickListener = clickListener;
         this.layoutInflater = layoutInflater;
