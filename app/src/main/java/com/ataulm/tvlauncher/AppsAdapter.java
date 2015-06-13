@@ -9,22 +9,16 @@ import java.util.List;
 
 final class AppsAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
-    private final LayoutInflater layoutInflater;
     private final List<App> apps;
     private final AppViewHolder.ClickListener clickListener;
+    private final LayoutInflater layoutInflater;
 
-    AppsAdapter(LayoutInflater layoutInflater, AppViewHolder.ClickListener clickListener) {
-        this.layoutInflater = layoutInflater;
+    AppsAdapter(List<App> apps, AppViewHolder.ClickListener clickListener, LayoutInflater layoutInflater) {
+        this.apps = apps;
         this.clickListener = clickListener;
-        this.apps = new ArrayList<>();
+        this.layoutInflater = layoutInflater;
 
         setHasStableIds(true);
-    }
-
-    void update(List<App> apps) {
-        this.apps.clear();
-        this.apps.addAll(apps);
-        notifyDataSetChanged();
     }
 
     @Override
