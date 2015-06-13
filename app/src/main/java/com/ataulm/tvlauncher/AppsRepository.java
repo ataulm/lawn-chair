@@ -3,6 +3,7 @@ package com.ataulm.tvlauncher;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +38,16 @@ class AppsRepository {
     private static App obtainAppFrom(PackageManager packageManager, ApplicationInfo applicationInfo) {
         Intent launchIntent = packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
         String name = String.valueOf(packageManager.getApplicationLabel(applicationInfo));
-        return createApp(name, launchIntent);
+        Drawable icon = packageManager.getApplicationIcon(applicationInfo);
+
+        return createApp(name, icon, launchIntent);
     }
 
-    private static App createApp(String appName, Intent intent) {
+    private static App createApp(String appName, Drawable icon, Intent intent) {
         if (intent == null) {
             return App.NULL_SAFE;
         }
-        return new App(appName, intent);
+        return new App(appName, icon, intent);
     }
 
 }

@@ -15,16 +15,19 @@ public class LauncherActivity extends Activity {
         setContentView(R.layout.activity_launcher);
 
         List<App> apps = new AppsRepository(getPackageManager()).fetchApps();
-        AppViewHolder.ClickListener clickListener = new AppViewHolder.ClickListener() {
+        RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
+        RecyclerView.Adapter adapter = new AppsAdapter(apps, createOnAppClickListener(), getLayoutInflater());
+        appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        appsRecyclerView.setAdapter(adapter);
+    }
+
+    private AppViewHolder.ClickListener createOnAppClickListener() {
+        return new AppViewHolder.ClickListener() {
             @Override
             public void onClick(App app) {
                 startActivity(app.getIntent());
             }
         };
-        RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
-        RecyclerView.Adapter adapter = new AppsAdapter(apps, clickListener, getLayoutInflater());
-        appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        appsRecyclerView.setAdapter(adapter);
     }
 
 }
