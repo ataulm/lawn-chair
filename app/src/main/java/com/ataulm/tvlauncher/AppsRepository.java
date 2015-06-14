@@ -30,6 +30,9 @@ class AppsRepository {
         Set<App> launchableInstalledApps = new HashSet<>();
         for (ResolveInfo resolveInfo : getInstalledAppsFrom(packageManager)) {
             App app = obtainAppFrom(packageManager, resolveInfo);
+            if (app.getPackageName().toString().equals(BuildConfig.APPLICATION_ID)) {
+                continue;
+            }
             if (app.isReal()) {
                 launchableInstalledApps.add(app);
             }
