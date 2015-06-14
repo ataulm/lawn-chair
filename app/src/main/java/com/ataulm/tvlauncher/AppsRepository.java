@@ -1,12 +1,17 @@
 package com.ataulm.tvlauncher;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class AppsRepository {
 
@@ -22,8 +27,8 @@ class AppsRepository {
 
     private static List<App> getAppsFrom(PackageManager packageManager) {
         List<App> launchableInstalledApps = new ArrayList<>();
-        for (ApplicationInfo applicationInfo : getInstalledAppsFrom(packageManager)) {
-            App app = obtainAppFrom(packageManager, applicationInfo);
+        for (ResolveInfo resolveInfo : getInstalledAppsFrom(packageManager)) {
+            App app = obtainAppFrom(packageManager, resolveInfo.activityInfo.applicationInfo);
             if (app.isReal()) {
                 launchableInstalledApps.add(app);
             }
@@ -31,8 +36,27 @@ class AppsRepository {
         return launchableInstalledApps;
     }
 
-    private static List<ApplicationInfo> getInstalledAppsFrom(PackageManager packageManager) {
-        return packageManager.getInstalledApplications(PackageManager.PERMISSION_GRANTED);
+    private static Set<ResolveInfo> getInstalledAppsFrom(PackageManager packageManager) {
+        Set<ResolveInfo> activities = new HashSet<>();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            activities.addAll(launcherActivitiesIn(packageManager));
+        } else {
+            activities.addAll(leanbackActivitiesIn(packageManager));
+        }
+        return activities;
+    }
+
+    private static List<ResolveInfo> launcherActivitiesIn(PackageManager packageManager) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        return packageManager.queryIntentActivities(intent, 0);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static List<ResolveInfo> leanbackActivitiesIn(PackageManager packageManager) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
+        return packageManager.queryIntentActivities(intent, 0);
     }
 
     private static App obtainAppFrom(PackageManager packageManager, ApplicationInfo applicationInfo) {
