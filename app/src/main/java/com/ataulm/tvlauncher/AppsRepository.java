@@ -48,16 +48,22 @@ class AppsRepository {
     }
 
     private static List<ResolveInfo> launcherActivitiesIn(PackageManager packageManager) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        return packageManager.queryIntentActivities(intent, 0);
+        Intent intent = new Intent()
+                .setAction(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_LAUNCHER);
+        return getResolveInfos(packageManager, intent);
+    }
+
+    private static List<ResolveInfo> getResolveInfos(PackageManager packageManager, Intent intent) {
+        return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static List<ResolveInfo> leanbackActivitiesIn(PackageManager packageManager) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-        return packageManager.queryIntentActivities(intent, 0);
+        Intent intent = new Intent()
+                .setAction(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
+        return getResolveInfos(packageManager, intent);
     }
 
     private static App obtainAppFrom(PackageManager packageManager, ApplicationInfo applicationInfo) {
