@@ -33,7 +33,7 @@ public class LauncherActivity extends Activity {
         adapter = new LauncherAdapter(apps, createOnAppClickListener(), getLayoutInflater());
 
         RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
-        appsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        appsRecyclerView.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.launcher_columns)));
         appsRecyclerView.setAdapter(adapter);
     }
 
