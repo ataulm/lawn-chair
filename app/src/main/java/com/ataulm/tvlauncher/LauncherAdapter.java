@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
@@ -13,8 +14,8 @@ final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
     private final AppViewHolder.ClickListener clickListener;
     private final LayoutInflater layoutInflater;
 
-    LauncherAdapter(List<App> apps, AppViewHolder.ClickListener clickListener, LayoutInflater layoutInflater) {
-        this.apps = apps;
+    LauncherAdapter(Collection<App> apps, AppViewHolder.ClickListener clickListener, LayoutInflater layoutInflater) {
+        this.apps = new ArrayList<>(apps);
         this.clickListener = clickListener;
         this.layoutInflater = layoutInflater;
 
@@ -42,7 +43,7 @@ final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
         return apps.get(position).hashCode();
     }
 
-    void update(List<App> apps) {
+    void update(Collection<App> apps) {
         this.apps.clear();
         this.apps.addAll(apps);
         notifyDataSetChanged();

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +29,7 @@ public class LauncherActivity extends Activity {
     }
 
     private void onViewCreated() {
-        List<App> apps = getAppsSortedByMostUsed();
+        Collection<App> apps = getAppsSortedByMostUsed();
         adapter = new LauncherAdapter(apps, createOnAppClickListener(), getLayoutInflater());
 
         RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
@@ -35,8 +37,8 @@ public class LauncherActivity extends Activity {
         appsRecyclerView.setAdapter(adapter);
     }
 
-    private List<App> getAppsSortedByMostUsed() {
-        List<App> apps = appsRepository.fetchApps();
+    private Collection<App> getAppsSortedByMostUsed() {
+        List<App> apps = new ArrayList<>(appsRepository.fetchApps());
         Map<App, Integer> openCounts = appsUsageDataRepository.sortByMostUsed(apps);
         sortByOpenCounts(apps, openCounts);
         return apps;
@@ -73,7 +75,7 @@ public class LauncherActivity extends Activity {
     }
 
     private void reorderAppsInLauncher() {
-        List<App> apps = getAppsSortedByMostUsed();
+        Collection<App> apps = getAppsSortedByMostUsed();
         adapter.update(apps);
     }
 

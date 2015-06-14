@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,12 +23,12 @@ class AppsRepository {
         this.packageManager = packageManager;
     }
 
-    public List<App> fetchApps() {
+    public Collection<App> fetchApps() {
         return getAppsFrom(packageManager);
     }
 
-    private static List<App> getAppsFrom(PackageManager packageManager) {
-        List<App> launchableInstalledApps = new ArrayList<>();
+    private static Collection<App> getAppsFrom(PackageManager packageManager) {
+        Set<App> launchableInstalledApps = new HashSet<>();
         for (ResolveInfo resolveInfo : getInstalledAppsFrom(packageManager)) {
             App app = obtainAppFrom(packageManager, resolveInfo.activityInfo.applicationInfo);
             if (app.isReal()) {
