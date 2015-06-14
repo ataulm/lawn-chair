@@ -48,14 +48,14 @@ class AppsRepository {
     }
 
     private static List<ResolveInfo> launcherActivitiesIn(PackageManager packageManager) {
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         return packageManager.queryIntentActivities(intent, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static List<ResolveInfo> leanbackActivitiesIn(PackageManager packageManager) {
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
         return packageManager.queryIntentActivities(intent, 0);
     }
