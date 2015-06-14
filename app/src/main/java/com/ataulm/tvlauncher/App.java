@@ -47,28 +47,13 @@ public class App {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         App app = (App) o;
-
-        if (!packageName.equals(app.packageName)) {
-            return false;
-        }
-        if (!name.equals(app.name)) {
-            return false;
-        }
-        if (icon != null ? !icon.equals(app.icon) : app.icon != null) {
-            return false;
-        }
-        return intent.equals(app.intent);
+        return packageName.equals(app.packageName);
     }
 
     @Override
     public int hashCode() {
-        int result = packageName.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (icon != null ? icon.hashCode() : 0);
-        result = 31 * result + intent.hashCode();
-        return result;
+        return packageName.hashCode();
     }
 
     static class PackageName {
