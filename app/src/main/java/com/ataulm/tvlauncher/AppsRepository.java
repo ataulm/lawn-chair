@@ -104,10 +104,7 @@ class AppsRepository {
     }
 
     private static App createApp(App.PackageName packageName, String appName, Drawable icon, Intent intent) {
-        if (intent == null) {
-            return App.NULL_SAFE;
-        }
-        return new App(packageName, appName, icon, intent);
+        return App.from(packageName, appName, icon, intent);
     }
 
 }

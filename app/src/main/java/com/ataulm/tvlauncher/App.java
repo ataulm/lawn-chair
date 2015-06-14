@@ -5,12 +5,19 @@ import android.graphics.drawable.Drawable;
 
 public class App {
 
-    public static final App NULL_SAFE = new App(new PackageName(""), "", null, new Intent());
+    private static final App NULL_SAFE = new App(new PackageName(""), "", null, new Intent());
 
     private final PackageName packageName;
     private final String name;
     private final Drawable icon;
     private final Intent intent;
+
+    public static App from(App.PackageName packageName, String appName, Drawable icon, Intent intent) {
+        if (intent == null) {
+            return App.NULL_SAFE;
+        }
+        return new App(packageName, appName, icon, intent);
+    }
 
     App(PackageName packageName, String name, Drawable icon, Intent intent) {
         this.packageName = packageName;
