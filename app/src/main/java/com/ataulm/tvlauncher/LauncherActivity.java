@@ -79,4 +79,8 @@ public class LauncherActivity extends Activity {
         adapter.update(apps);
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }
