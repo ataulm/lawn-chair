@@ -5,33 +5,76 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class LauncherActivity extends Activity {
 
-    private AppUsageDataRepository appUsageDataRepository;
+    private AppsRepository appsRepository;
+    private AppsUsageDataRepository appsUsageDataRepository;
+    private LauncherAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        appUsageDataRepository = AppUsageDataRepository.newInstance(this);
+        appsRepository = new AppsRepository(getPackageManager());
+        appsUsageDataRepository = AppsUsageDataRepository.newInstance(this);
 
-        List<App> apps = new AppsRepository(getPackageManager()).fetchApps();
+        onViewCreated();
+    }
+
+    private void onViewCreated() {
+        List<App> apps = getAppsSortedByMostUsed();
+        adapter = new LauncherAdapter(apps, createOnAppClickListener(), getLayoutInflater());
+
         RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
-        RecyclerView.Adapter adapter = new LauncherAdapter(apps, createOnAppClickListener(), getLayoutInflater());
         appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         appsRecyclerView.setAdapter(adapter);
+    }
+
+    private List<App> getAppsSortedByMostUsed() {
+        List<App> apps = appsRepository.fetchApps();
+        Map<App, Integer> openCounts = appsUsageDataRepository.sortByMostUsed(apps);
+        sortByOpenCounts(apps, openCounts);
+        return apps;
+    }
+
+    private static void sortByOpenCounts(List<App> apps, final Map<App, Integer> openCounts) {
+        Collections.sort(apps,
+                new Comparator<App>() {
+
+                    @Override
+                    public int compare(App lhs, App rhs) {
+                        Integer lhsCounts = openCounts.get(lhs);
+                        Integer rhsCounts = openCounts.get(rhs);
+                        return reverse(lhsCounts.compareTo(rhsCounts));
+                    }
+
+                    private int reverse(int compareResult) {
+                        return -1 * compareResult;
+                    }
+
+                }
+        );
     }
 
     private AppViewHolder.ClickListener createOnAppClickListener() {
         return new AppViewHolder.ClickListener() {
             @Override
             public void onClick(App app) {
-                appUsageDataRepository.onOpen(app);
+                appsUsageDataRepository.onOpen(app);
                 startActivity(app.getIntent());
+                reorderAppsInLauncher();
             }
         };
+    }
+
+    private void reorderAppsInLauncher() {
+        List<App> apps = getAppsSortedByMostUsed();
+        adapter.update(apps);
     }
 
 }

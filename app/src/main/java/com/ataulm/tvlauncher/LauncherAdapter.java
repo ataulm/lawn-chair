@@ -28,7 +28,8 @@ final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
 
     @Override
     public void onBindViewHolder(AppViewHolder holder, int position) {
-        holder.bind(apps.get(position));
+        App app = apps.get(position);
+        holder.bind(app);
     }
 
     @Override
@@ -39,6 +40,12 @@ final class LauncherAdapter extends RecyclerView.Adapter<AppViewHolder> {
     @Override
     public long getItemId(int position) {
         return apps.get(position).hashCode();
+    }
+
+    void update(List<App> apps) {
+        this.apps.clear();
+        this.apps.addAll(apps);
+        notifyDataSetChanged();
     }
 
 }
