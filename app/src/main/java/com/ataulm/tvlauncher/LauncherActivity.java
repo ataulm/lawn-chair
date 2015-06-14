@@ -2,7 +2,7 @@ package com.ataulm.tvlauncher;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class LauncherActivity extends Activity {
         adapter = new LauncherAdapter(apps, createOnAppClickListener(), getLayoutInflater());
 
         RecyclerView appsRecyclerView = (RecyclerView) findViewById(R.id.launcher_recycler_apps);
-        appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        appsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         appsRecyclerView.setAdapter(adapter);
     }
 
