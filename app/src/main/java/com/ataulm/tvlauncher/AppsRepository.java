@@ -38,9 +38,8 @@ class AppsRepository {
 
     private static Set<ResolveInfo> getInstalledAppsFrom(PackageManager packageManager) {
         Set<ResolveInfo> activities = new HashSet<>();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            activities.addAll(launcherActivitiesIn(packageManager));
-        } else {
+        activities.addAll(launcherActivitiesIn(packageManager));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activities.addAll(leanbackActivitiesIn(packageManager));
         }
         return activities;
