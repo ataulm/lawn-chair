@@ -56,6 +56,11 @@ public class App {
         return packageName.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return name + " " + packageName;
+    }
+
     static class PackageName {
 
         private final String packageName;
@@ -79,9 +84,7 @@ public class App {
             }
 
             PackageName that = (PackageName) o;
-
             return packageName.equals(that.packageName);
-
         }
 
         @Override
