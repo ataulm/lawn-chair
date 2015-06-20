@@ -15,7 +15,6 @@ import java.util.Set;
 
 class AppsRepository {
 
-    private static final String CATEGORY_LEANBACK_SETTINGS = "android.intent.category.LEANBACK_SETTINGS";
     private final PackageManager packageManager;
 
     AppsRepository(PackageManager packageManager) {
@@ -45,7 +44,6 @@ class AppsRepository {
         activities.addAll(launcherActivitiesIn(packageManager));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activities.addAll(leanbackActivitiesIn(packageManager));
-            activities.addAll(leanbackSettingsActivitiesIn(packageManager));
         }
         return activities;
     }
@@ -64,13 +62,6 @@ class AppsRepository {
     private static List<ResolveInfo> leanbackActivitiesIn(PackageManager packageManager) {
         Intent intent = new Intent(Intent.ACTION_MAIN)
                 .addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-        return getResolveInfos(packageManager, intent);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static List<ResolveInfo> leanbackSettingsActivitiesIn(PackageManager packageManager) {
-        Intent intent = new Intent(Intent.ACTION_MAIN)
-                .addCategory(CATEGORY_LEANBACK_SETTINGS);
         return getResolveInfos(packageManager, intent);
     }
 

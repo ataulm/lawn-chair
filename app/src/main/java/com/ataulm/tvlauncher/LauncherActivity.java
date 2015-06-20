@@ -67,8 +67,8 @@ public class LauncherActivity extends Activity {
         return new AppViewHolder.ClickListener() {
             @Override
             public void onClick(App app) {
-                appsUsageDataRepository.onOpen(app);
                 startActivity(app.getIntent());
+                appsUsageDataRepository.onOpen(app);
                 reorderAppsInLauncher();
             }
         };
