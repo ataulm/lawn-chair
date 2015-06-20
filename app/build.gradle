@@ -1,5 +1,9 @@
-apply plugin: 'com.android.application'
+def signingStoreFile = hasProperty('signingStoreFile') ? signingStoreFile : 'provide this in gradle.properties'
+def signingStorePassword = hasProperty('signingStorePassword') ? signingStorePassword : 'provide this in gradle.properties'
+def signingKeyAlias = hasProperty('signingKeyAlias') ? signingKeyAlias : 'provide this in gradle.properties'
+def signingKeyPassword = hasProperty('signingKeyPassword') ? signingKeyPassword : 'provide this in gradle.properties'
 
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
@@ -12,10 +16,19 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file(signingStoreFile)
+            storePassword signingStorePassword
+            keyAlias signingKeyAlias
+            keyPassword signingKeyPassword
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
